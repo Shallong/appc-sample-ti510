@@ -1,56 +1,56 @@
-# Titanium 5.1.0 应用范例
+# Titanium 5.1.0 Sample App
 
-> **注意:** 此应用范例需要 Titanium 5.1.0, Alloy 1.7.26 and AppC CLI Core Package 5.1.0 或之后的版本才可正常运行。
+> **NOTE:** This Sample App requires Titanium 5.1.0, Alloy 1.7.26 and AppC CLI Core Package 5.1.0 or later.
 
-[Titanium 5.1.0 应用范例](https://github.com/appcelerator-developer-relations/appc-sample-ti500) 演示了 Titanium 5.1.0 中大部分的新功能，包括了重构运行时权限模型，新 Material Design 元素，SafariDialog 以及一些 iOS 下的主要改变。
+The [Titanium 5.1.0 Sample App](https://github.com/appcelerator-developer-relations/appc-sample-ti510) demonstrates most of the new features in Titanium 5.1.0, including a re-architected runtime permissions model, new Material Design elements, SafariDialog and also some major changes for iOS under the hood.
 
-其中一个最令人兴奋的功能是 iPhone 6S 3D Touch 的支持与主屏快捷操作。我们很高兴的提供了一个单独的 [3D Touch 应用范例](https://github.com/appcelerator-developer-relations/appc-sample-3dtouch)。
+One of the most exciting new features is support for iPhone 6S 3D Touch with Peek & Pop and Home Screen Quick Actions. Exciting enough to deserve a dedicated [3D Touch Sample App](https://github.com/appcelerator-developer-relations/appc-sample-3dtouch).
 
-所有功能改变列表请参照 [Release Notes](http://docs.appcelerator.com/platform/release-notes/?version=5.1.0.GA)。
+For a full list of changes see the [Release Notes](http://docs.appcelerator.com/platform/release-notes/?version=5.1.0.GA).
 
-## 设备权限
-这个版本重构了一个应用请求设备权限的方式为的是支持新的 Android 6.0 在运行时请求设备权限的模型，以及保持 Android 和 iOS 平台的一致性。Windows 平台的支持将会在以后的版本中添加。
+## Device Permissions
+This Release re-architected the way an application requests device permissions in order to support the new Android 6.0 model for requesting device permissions during runtime and to achieve parity between the Android and iOS platforms. Support for the Windows platform will be added in a later release.
 
-### 例子
-*Permissions* 页有4个按钮为 `Ti.Calendar`，`Ti.Contacts`，`Ti.Geolocation`和`Ti.Media` 供测试新的 `has*Permissions()` 以及 `request*Permissions` 方法。可以参考 [permissions.js](app/controllers/permissions.js) 我们是如何同时使用新的方法和一些现存的方法来检查和申请权限的。轻按左上角的 *Edit* 按钮以打开一个设置的窗口去改变你的权限请求的初始值。
+### Sample
+The *Permissions* tab has four buttons to test the new `has*Permissions()` and `request*Permissions` methods for `Ti.Calendar`, `Ti.Contacts`, `Ti.Geolocation` and `Ti.Media`. See [permissions.js](app/controllers/permissions.js) for how we're using both these new methods as well as some existing to check and request permissions. Tap the top right *Edit* button to open the settings screen to change your initial response to the permission request.
 
 ### Android
-Android 如果要在运行时请求一些权限的话，需要添加 [uses-permission](http://docs.appcelerator.com/platform/latest/#!/guide/tiapp.xml_and_timodule.xml_Reference-section-29004921_tiapp.xmlandtimodule.xmlReference-uses-permission) 元素到 `AndroidManifest.xml`。不过 Titanium 会帮你自动完成这个配置如果它在你的代码中找到一个例如 `Ti.Media.showCamera()` 的请求的话，但如果你想使用新的 has- 和权限申请方法的话 [它并不会这么做](https://jira.appcelerator.org/browse/TIMOB-19933)。一个你可能会碰到这个问题的情况是权限申请的代码不在你得 JavaScript 代码里，而是在模块里。如果是这样的话你就不得不手动地 [在 tiapp.xml 中申明权限](http://docs.appcelerator.com/platform/latest/#!/guide/tiapp.xml_and_timodule.xml_Reference-section-29004921_tiapp.xmlandtimodule.xmlReference-uses-permission)。
+Android requires [uses-permission](http://docs.appcelerator.com/platform/latest/#!/guide/tiapp.xml_and_timodule.xml_Reference-section-29004921_tiapp.xmlandtimodule.xmlReference-uses-permission) elements to be added to `AndroidManifest.xml` for any permission you may request at runtime. Titanium will do this automatically if it finds a call like `Ti.Media.showCamera()` in your code, but if all you use are the new has- and request permissions methods [it will not](https://jira.appcelerator.org/browse/TIMOB-19933). A more likely scenario where you run into this is when you don't use the permissions in your JavaScript code but in a module. In this case you will have to manually [declare the permissions in tiapp.xml](http://docs.appcelerator.com/platform/latest/#!/guide/tiapp.xml_and_timodule.xml_Reference-section-29004921_tiapp.xmlandtimodule.xmlReference-uses-permission).
 
 ### iOS
-在 Android 平台上，你可以很容易的删除和重装应用以获得一个空白状态。在 iOS 平台上，即使这个应用被删除了还是会记住之前的权限状态。如果你想在 iOS 平台上获得一个空白状态用于测试时，你可以改变 `tiapp.xml` 中的 APP ID 或者在 *设置 > 通用 > 还原 > 还原位置与隐私* 重置你 **所有** 应用的权限。
+On Android you can simply delete and reinstall the app for a blank slate. iOS remembers your permissions even after the app is removed. Change the app ID in `tiapp.xml` or reset the permissions for **all** your apps via *Settings > General > Reset > Reset Location and Privacy.* if you would like to test from a blank slate.
 
-## 限定平台的 DefaultIcon
-在 Titanium 5.0 中我们引入了 `DefaultIcon.png`，基于一个源文件就可以自动生成所有 iOS 应用图标。在 5.1 中我们也支持了 Windows 平台。和这个一起的是我们引入了限定平台的 DefaultIcon。iOS 需要图标是24-比特并且没有无透明通道。其他平台则支持或甚至推荐32-比特并且带有透明通道。为了适配，这个应用范例还有个24-比特的 [DefaultIcon-ios.png](DefaultIcon-ios.png) 以及一个用于 Windows 应用的32-比特的 [DefaultIcon.png](DefaultIcon.png)。
+## Platform-specific DefaultIcon
+In [Titanium 5.0](https://github.com/appcelerator-developer-relations/appc-sample-ti500) we introduced `DefaultIcon.png` to automatically generate all iOS app icons from a single source. In 5.1 we add support for Windows. With that we also introduce platform-specific DefaultIcons. iOS requires icons to be 24-bit with no alpha-channel. The other platforms do support or even promote the use of 32-bit PNGs with alpha-channel. To accomodate this the sample app has a 24-bit [DefaultIcon-ios.png](DefaultIcon-ios.png) and a 32-bit [DefaultIcon.png](DefaultIcon.png) which will be used if you build the app for Windows:
 
 ![DefaultIcon](docs/defaulticon.png)
 
-> **注意:** 此应用范例在 Windows 平台上并做不了什么除了展现 DefaultIcon。我们将很快会有另外一个例子，展示你可以混合使用 Titanium 视图以及由 [Runtime Direct API Access](http://docs.appcelerator.com/platform/latest/#!/guide/Windows_Runtime_Direct_API_Access) 创建的视图。
+> **NOTE:** Other then showing off the DefaultIcon this sample app doesn't do much on Windows. We will have another sample soon to show how you can now mix and match Titanium Views and views created via [Runtime Direct API Access](http://docs.appcelerator.com/platform/latest/#!/guide/Windows_Runtime_Direct_API_Access).
 
 ## iOS
-这个版本包含了诸多 iOS 的新功能。
+This release includes several new features for iOS.
 
 ### Safari Dialog
-伴随着 iOS 9， [Apple 引入了](https://developer.apple.com/videos/play/wwdc2015-504/) [SFSafariViewController](https://developer.apple.com/library/prerelease/ios/documentation/SafariServices/Reference/SFSafariViewController_Ref/index.html)。对于两种情况，1.用户离开你的应用而在 Safari 中打开一个 URL 和 2.在你的应用中通过使用 [Ti.UI.WebView](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.WebView) 来重造一个浏览器体验，来说是一个不错的中间道路。就把它当做是一个弹出窗口，有着 webview 并且还有一些 Safari 的特性，诸如阅读列表，自动完成等功能。
+With iOS 9 [Apple introduced](https://developer.apple.com/videos/play/wwdc2015-504/) the [SFSafariViewController](https://developer.apple.com/library/prerelease/ios/documentation/SafariServices/Reference/SFSafariViewController_Ref/index.html). A great middle-road between having users leave your app by opening an URL in Safari or recreating a browser experience within your app using [Ti.UI.WebView](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.WebView). Think of it as a modal window, webview plus Safari features like Reader, AutoFill etc.
 
 ![safaridialog](docs/safaridialog.png)
 
-#### 例子
-*iOS* 页前两个按钮分别在 Safari - 通过 [Ti.Platform.openURL](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.Platform-method-openURL) 打开，以及新的 Safari Dialog 中打开同一个 URL。好了，大家来“找茬”吧！
+#### Sample
+The first two buttons on the *iOS* tab open the same URL in both Safari - using [Ti.Platform.openURL](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.Platform-method-openURL) - and the new Safari Dialog. Spot the differences!
 
-#### 使用
-Safari Dialog 并不是 Titanium SDK 的一部分，但它被绑定在一个分开的模块中。这就意味着我们需要在 [tiapp.xml](tiapp.xml#L81) 中添加这个模块并且在 [ios.js](app/controllers/ios.js) 中引入使用。你可以发现它有一个 `open` 以及一个 `close` 事件，并且有方法检查是否支持当前的 iOS 版本，和是否对话框已经打开了。你也可以使用编程的方式来关闭对话框，就像我们做的那样，5秒钟之后关闭。你可以设置对话框中按钮的 tintColor，以适配你的应用，最后如果需要的话可以自动打开阅读列表。
+#### Usage
+Safari Dialog is not part of the Titanium SDK, but it is bundled as a separate module. This means we have to add it via [tiapp.xml](tiapp.xml#L81) and require it in [ios.js](app/controllers/ios.js). As you can see it has an `open` and `close` event and methods to check if the iOS version supports it and if the dialog is currently open. You can also programmatically close the dialog, which we do after 5 seconds. You can set the tintColor of the buttons in the dialog to fit your app and tell it to automatically open Reader if available.
 
 ### Picker
-你现在可以在创建时就改变 [Ti.UI.Picker](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.Picker-property-height) 的高度了。在我们的例子中，有一个 [设置一个高50的 date-picker](app/views/ios.xml) 以至于它每次只显示一行。
+You can now change the height of a [Ti.UI.Picker](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.Picker-property-height) on creation. In our sample we have [set a date-picker to a height of 50](app/views/ios.xml) so that it only shows one row at a time.
 
 ### AlertDialog
-从这个版本开始，当使用提示对话框类型为 `PLAIN_TEXT_INPUT` 或 `SECURE_TEXT_INPUT` 时，你可以设置 [placeholder](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-placeholder)，[keyboardType](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-keyboardType) 以及 [returnKeyType](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-returnKeyType) 属性，这些属性你可能已经在 `Ti.UI.TextField` 和 `Ti.UI.TextArea` 中见过了。对于 `LOGIN_AND_PASSWORD_INPUT` 属性来说，你需要在这些属性前加上 `login` 和 `password` 的前缀。
+Starting in this release, when using the alert dialog style `PLAIN_TEXT_INPUT` or `SECURE_TEXT_INPUT`, you can set the [placeholder](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-placeholder), [keyboardType](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-keyboardType) and [returnKeyType](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.UI.AlertDialog-property-returnKeyType) properties you will probably already known from `Ti.UI.TextField` and `Ti.UI.TextArea`. For `LOGIN_AND_PASSWORD_INPUT` you'll have to use these properties prefixed with `login` and `password`.
 
-我们例子中的 *iOS* 页演示了所有这3个属性。参考 [ios.js](app/controllers/ios.js) 中 `alertDialog()` 回调实现吧。
+The *iOS* tab of our sample demonstrates the use of these properties for all three styles. See the `alertDialog()` callback in [ios.js](app/controllers/ios.js) for the implementation.
 
 ### UserNotificationAction TEXTINPUT
-还记得 [交互式通知中心例子](https://github.com/appcelerator-developer-relations/appc-sample-notifywatch) 吗？ With this release you can set an action's new [behavior](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.App.iOS.UserNotificationAction-property-behavior) property to [TEXTINPUT](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.App.iOS-property-USER_NOTIFICATION_BEHAVIOR_TEXTINPUT) to to have the user type and send a message directly from the notification:
+Remember the [Interactive Notifications Sample](https://github.com/appcelerator-developer-relations/appc-sample-notifywatch)? With this release you can set an action's new [behavior](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.App.iOS.UserNotificationAction-property-behavior) property to [TEXTINPUT](http://docs.appcelerator.com/platform/latest/#!/api/Titanium.App.iOS-property-USER_NOTIFICATION_BEHAVIOR_TEXTINPUT) to to have the user type and send a message directly from the notification:
 
 ![textinput](docs/textinput.png)
 
