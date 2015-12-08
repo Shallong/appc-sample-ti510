@@ -22,7 +22,7 @@ Android 如果要在运行时请求一些权限的话，需要添加 [uses-permi
 一个你可能会碰到这个问题的情况是权限申请的代码不在你的 JavaScript 代码里，而是在模块里。如果是这样的话你就不得不手动地 [在 tiapp.xml 中申明权限](http://docs.appcelerator.com/platform/latest/#!/guide/tiapp.xml_and_timodule.xml_Reference-section-29004921_tiapp.xmlandtimodule.xmlReference-uses-permission)。
 
 ### iOS
-在 Android 平台上，你可以很容易的通过删除和重装应用以获得一个空白的出师状态。
+在 Android 平台上，你可以很容易的通过删除和重装应用以获得一个空白的初始状态。
 在 iOS 平台上，即使这个应用被删除了还是会记住之前的权限状态。
 如果你想在 iOS 平台上获得一个空白的初始状态用于测试时，你可以修改 `tiapp.xml` 中的 APP ID 或者在 *设置 > 通用 > 还原 > 还原位置与隐私* 重置你 **所有** 应用的权限。
 
